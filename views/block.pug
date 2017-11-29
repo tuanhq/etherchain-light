@@ -4,11 +4,11 @@ block content
   br
   .row
     .col-md-1
-      a.btn.btn-primary(href="/block/" + (block.number - 1), role="button") Previous
+      a(style={ background: '#3f51b5'}).btn.btn-primary(href="/block/" + (block.number - 1), role="button") Previous
     .col-md-10.text-center
       h3 Block #{block.number}
     .col-md-1
-      a.btn.btn-primary(href="/block/" + (block.number + 1), role="button") Next
+      a(style={ background: '#3f51b5'}).btn.btn-primary(href="/block/" + (block.number + 1), role="button") Next
 
   table.table
     tr
@@ -51,7 +51,7 @@ block content
             a(href="uncle/" + block.hash + "/" + index) #{index + " - " + uncle}
   
   h4 Transactions
-  if block.transactions.length === 0
+  if block.transactions.length === 0 && block.number !== 0
     p Block does not contain any transactions.
   else
     table.table
@@ -63,43 +63,69 @@ block content
           th To
           th Amount
       tbody
-        for tx in block.transactions
-          tr
-            td
-              if tx.error
-                span(style="color: red", data-toggle="tooltip", data-placement="left", title=tx.error).glyphicon.glyphicon-warning-sign
-              a(href="/tx/" + tx.hash)  #{tx.hash.substr(0, 10)}...
-            td Tx
-            td
-              a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
-            td
-              if tx.to
-                a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
-              else
-                | New Contract
-            td #{ethformatter(tx.value)}
-          for trace in tx.traces
+        if block.number === 0
             tr
-              td.text-right
-                if trace.error
-                  span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
-                span.glyphicon.glyphicon-arrow-right
-              td.capitalize #{trace.type}
-              if trace.type === "call"
+                td  GENESIS_0xa96e6618b7c97095c4c9fd8e247aaef647ef35cd
+                td  GENESIS
+                td  GENESIS
                 td
-                  a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
-                td 
-                  a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
-                td #{ethformatter(trace.action.value)}
-              else if trace.type === "create"
+                    a(href="/account/0xa96e6618b7c97095c4c9fd8e247aaef647ef35cd") #{nameformatter.format("0xa96e6618b7c97095c4c9fd8e247aaef647ef35cd")}
+
+                td #{ethformatter(1e+25)}
+            tr
+                td  GENESIS_0xc22fa356a0c1c5b9073958495db7e836e581ac19
+                td  GENESIS
+                td  GENESIS
                 td
-                  a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                    a(href="/account/0xc22fa356a0c1c5b9073958495db7e836e581ac19") #{nameformatter.format("0xc22fa356a0c1c5b9073958495db7e836e581ac19")}
+
+                td #{ethformatter(1e+25)}
+            tr
+                td  GENESIS_0xbf16be05a48cbfd8b1f10ec3bc70cdcf1e3c48a3
+                td  GENESIS
+                td  GENESIS
                 td
-                  a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
-                td #{ethformatter(trace.action.value)}
-              else if trace.type === "suicide"
+                    a(href="/account/0xbf16be05a48cbfd8b1f10ec3bc70cdcf1e3c48a3") #{nameformatter.format("0xbf16be05a48cbfd8b1f10ec3bc70cdcf1e3c48a3")}
+
+                td #{ethformatter(1.2e+25)}
+        else
+            for tx in block.transactions
+              tr
                 td
-                  a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
+                  if tx.error
+                    span(style="color: red", data-toggle="tooltip", data-placement="left", title=tx.error).glyphicon.glyphicon-warning-sign
+                  a(href="/tx/" + tx.hash)  #{tx.hash.substr(0, 10)}...
+                td Tx
                 td
-                  a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
-                td #{ethformatter(trace.action.balance)}
+                  a(href="/account/" + tx.from) #{nameformatter.format(tx.from)}
+                td
+                  if tx.to
+                    a(href="/account/" + tx.to) #{nameformatter.format(tx.to)}
+                  else
+                    | New Contract
+                td #{ethformatter(tx.value)}
+              for trace in tx.traces
+                tr
+                  td.text-right
+                    if trace.error
+                      span(style="color: red", data-toggle="tooltip", data-placement="left", title=trace.error).glyphicon.glyphicon-warning-sign
+                    span.glyphicon.glyphicon-arrow-right
+                  td.capitalize #{trace.type}
+                  if trace.type === "call"
+                    td
+                      a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                    td
+                      a(href="/account/" + trace.action.to) #{nameformatter.format(trace.action.to)}
+                    td #{ethformatter(trace.action.value)}
+                  else if trace.type === "create"
+                    td
+                      a(href="/account/" + trace.action.from) #{nameformatter.format(trace.action.from)}
+                    td
+                      a(href="/account/" + trace.result.address) #{nameformatter.format(trace.result.address)}
+                    td #{ethformatter(trace.action.value)}
+                  else if trace.type === "suicide"
+                    td
+                      a(href="/account/" + trace.action.address) #{nameformatter.format(trace.action.address)}
+                    td
+                      a(href="/account/" + trace.action.refundAddress) #{nameformatter.format(trace.action.refundAddress)}
+                    td #{ethformatter(trace.action.balance)}
