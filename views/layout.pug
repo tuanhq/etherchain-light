@@ -14,7 +14,13 @@ html(lang="en")
     
     link(href=config.bootstrapUrl, rel="stylesheet", crossorigin="anonymous")    
     link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='shortcut icon' href='/images/ico.png')
+
+    script(src='/scripts/jquery-3.2.1.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/5.0.0/bignumber.min.js')
+
+
     
   body
     nav(style={ background: '#3f51b5'}).navbar.navbar-inverse.navbar-fixed-top
