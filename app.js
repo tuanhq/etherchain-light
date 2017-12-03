@@ -28,8 +28,8 @@ var app = express();
 
 
 //apend from www
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+var port = normalizePort(process.env.PORT || '3001');
+app.set('port', '3001');
 
 var server = http.createServer(app);
 
