@@ -13,7 +13,7 @@ router.post('/verify', function(req, res, next) {
   var signature = req.body.signature;
   
   if (!ethereumAddress) {
-    res.render('verifySignature', { result: { error: "Invalid Ethereum Address"}, message: message, signature: signature, ethereumAddress: ethereumAddress });
+    res.render('verifySignature', { result: { error: "Invalid EBC Address"}, message: message, signature: signature, ethereumAddress: ethereumAddress });
     return;
   }
   if (!message) {
