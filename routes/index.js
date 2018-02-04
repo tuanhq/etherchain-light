@@ -4,7 +4,6 @@ var router = express.Router();
 var async = require('async');
 var Web3 = require('web3');
 var blockUtil = require('../utils/blockUtil.js');
-
 module.exports = function (io,config) {
   io.on("connection",function (socket) {
       console.log("co con nection");
@@ -12,14 +11,10 @@ module.exports = function (io,config) {
       web3.setProvider(config.provider);
       web3.eth.filter("latest", function(error, result){
           blockUtil.listBlock(config,function (err,data) {
-              if (err) {
-                  return next(err);
+              if (!err) {
+                  io.sockets.emit("update-lastest-block",data);
               }
-              io.sockets.emit("update-lastest-block",data);
-
           });
-
-
       });
       /*blockUtil.listBlock(config,function (err,data) {
           if (err) {

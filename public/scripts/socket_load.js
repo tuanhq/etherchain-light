@@ -1,4 +1,4 @@
-var socket = io("http://192.168.56.101:3000");
+var socket = io("https://scan.ebccoin.io");
 var ebc     = new BigNumber(1e+18);
 function formatEBC(balance) {
     var ret = new BigNumber(balance.toString());

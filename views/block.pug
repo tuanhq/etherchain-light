@@ -4,11 +4,11 @@ block content
   br
   .row
     .col-md-1
-      a(style={ background: '#3f51b5'}).btn.btn-primary(href="/block/" + (block.number - 1), role="button") Previous
+      a.btn.btn-primary( style={ background: '#3f51b5'} href="/block/" + (block.number - 1), role="button") Previous
     .col-md-10.text-center
       h3 Block #{block.number}
     .col-md-1
-      a(style={ background: '#3f51b5'}).btn.btn-primary(href="/block/" + (block.number + 1), role="button") Next
+      a.btn.btn-primary(style={ background: '#3f51b5'} href="/block/" + (block.number + 1), role="button") Next
 
   table.table
     tr

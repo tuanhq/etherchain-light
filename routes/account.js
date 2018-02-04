@@ -9,11 +9,8 @@ router.get('/:account', function(req, res, next) {
   var config = req.app.get('config');  
   var web3 = new Web3();
   web3.setProvider(config.provider);
-  
   var db = req.app.get('db');
-  
   var data = {};
-  
   async.waterfall([
     function(callback) {
       web3.eth.getBlock("latest", false, function(err, result) {
@@ -40,7 +37,6 @@ router.get('/:account', function(req, res, next) {
       if (code !== "0x") {
         data.isContract = true;
       }
-      
       db.get(req.params.account.toLowerCase(), function(err, value) {
         callback(null, value);
       });
@@ -55,8 +51,6 @@ router.get('/:account', function(req, res, next) {
         }
         var abi = JSON.parse(data.source.abi);
         var contract = web3.eth.contract(abi).at(req.params.account);
-        
-        
         async.eachSeries(abi, function(item, eachCallback) {
           if (item.type === "function" && item.inputs.length === 0 && item.constant) {
             try {
@@ -74,11 +68,9 @@ router.get('/:account', function(req, res, next) {
         }, function(err) {
           callback(err);
         });
-        
       } else {
         callback();
       }
-      
       
     }, function(callback) {
       web3.trace.filter({ "fromBlock": "0x" + data.fromBlock.toString(16), "fromAddress": [ req.params.account ] }, function(err, traces) {
@@ -110,31 +102,24 @@ router.get('/:account', function(req, res, next) {
       if (!blocks[trace.blockNumber]) {
         blocks[trace.blockNumber] = [];
       }
-      
       blocks[trace.blockNumber].push(trace);
     });
-    
     data.tracesSent = null;
     data.tracesReceived = null;
-    
     data.blocks = [];
     var txCounter = 0;
     for (var block in blocks) {
       data.blocks.push(blocks[block]);
       txCounter++;
     }
-    
     if (data.source) {
       data.name = data.source.name;
     } else if (config.names[data.address]) {
       data.name = config.names[data.address];
     }
-    
     data.blocks = data.blocks.reverse().splice(0, 100);
-    
     res.render('account', { account: data });
   });
   
 });
-
 module.exports = router;
