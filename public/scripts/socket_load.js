@@ -37,9 +37,10 @@ socket.on("update-lastest-block",function (data) {
             "</th>" +
             "</tr>" +
             "</thead>";
+        htmlTransactionList+=
+            "<tbody>";
         jQuery.each(tx,function (i,val) {
             htmlTransactionList+=
-                "<tbody>" +
                 "<tr>" +
                     "<td>" +
                     "<a href='/tx/"+val.hash+"'>"+val.hash.substr(0,10)+"...</a>" +
@@ -53,11 +54,12 @@ socket.on("update-lastest-block",function (data) {
                     "<td>"  +
                     formatEBC(val.value)+
                     "</td>" +
-                "</tr>" +
-                "</tbody>"+
-                "</table>";
+                "</tr>";
 
-        })
+
+        });
+        htmlTransactionList+="</tbody>"+
+        "</table>";
     }
     $('#recent_trans').html(htmlTransactionList);
 
